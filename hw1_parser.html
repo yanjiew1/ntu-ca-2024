@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HW1 Response Parser</title>
+    <script>
+        function parseSourceCode() {
+            // Get the input text
+            let input = document.getElementById("input").value;
+            // Parse the HTML
+            let parser = new DOMParser();
+            let doc = parser.parseFromString(input, "text/html");
+            // Get element with class quiz_response_text
+            let quiz_response_text = doc.getElementsByClassName("quiz_response_text");
+            // Clear the result
+            let result = document.getElementById("result");
+            result.innerHTML = "";
+
+            for (var i = 0; i < quiz_response_text.length; i++) {
+                let text = quiz_response_text[i].innerHTML;
+                let textarea = document.createElement("textarea");
+                // append heading
+                let heading = document.createElement("h3");
+                heading.innerText = "Answer " + (i + 1);
+                result.appendChild(heading);
+                textarea.value = text;
+                textarea.rows = 10;
+                textarea.cols = 50;
+                textarea.readOnly = true;
+                result.appendChild(textarea);
+                result.appendChild(document.createElement("br"));
+                // append copy button
+                let copyButton = document.createElement("input");
+                copyButton.type = "button";
+                copyButton.value = "Copy Answer " + (i + 1);
+                copyButton.onclick = function() {
+                    textarea.select();
+                    document.execCommand("copy");
+                };
+                result.appendChild(copyButton);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>HW1 Answer Parser</h1>
+    <textarea id="input" rows="10" cols="50"></textarea>
+    <br>
+    <input type="button" value="Parse" onclick="parseSourceCode()">
+    <br>
+    <h2>Output</h2>
+    <div id="message"></div>
+    <div id="result">
+    </div>
+</body>
+</html>
